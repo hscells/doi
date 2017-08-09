@@ -1,13 +1,12 @@
-package go_doi
+package doi
 
 import (
-	"testing"
 	"log"
+	"testing"
 )
 
 func TestParseDoiSuccessNumbers(t *testing.T) {
-	doiString := "10.1000/123456"
-	_, err := Parse(doiString)
+	_, err := Parse("10.1000/123456")
 	if err != nil {
 		log.Println(err)
 		t.Fail()
@@ -15,8 +14,7 @@ func TestParseDoiSuccessNumbers(t *testing.T) {
 }
 
 func TestParseDoiSuccessISSN(t *testing.T) {
-	doiString := "10.1038/issn.1476-4687"
-	_, err := Parse(doiString)
+	_, err := Parse("10.1038/issn.1476-4687")
 	if err != nil {
 		log.Println(err)
 		t.Fail()
@@ -24,104 +22,99 @@ func TestParseDoiSuccessISSN(t *testing.T) {
 }
 
 func TestParseDoiFailIncorrectGeneral(t *testing.T) {
-	doiString := "11.1038/123456"
-	_, err := Parse(doiString)
+	_, err := Parse("11.1038/123456")
 	if err == nil {
 		t.Fail()
 	}
 }
 
 func TestParseDoiFailNoRegistrantCode(t *testing.T) {
-	doiString := "10.1038"
-	_, err := Parse(doiString)
+	_, err := Parse("10.1038")
 	if err == nil {
 		t.Fail()
 	}
 }
 
 func TestParseDoiFailMissingRegistrantCode(t *testing.T) {
-	doiString := "10.1038/"
-	_, err := Parse(doiString)
+	_, err := Parse("10.1038/")
 	if err == nil {
 		t.Fail()
 	}
 }
 
 func TestParseDoiFailMissingGeneral(t *testing.T) {
-	doiString := ".1038/123456"
-	_, err := Parse(doiString)
+	_, err := Parse(".1038/123456")
 	if err == nil {
 		t.Fail()
 	}
 }
 
 func TestParseDoiFailMissingDirectoryIndicator(t *testing.T) {
-	doiString := "10./123456"
-	_, err := Parse(doiString)
+	_, err := Parse("10./123456")
 	if err == nil {
 		t.Fail()
 	}
 }
 
 func TestIsValidSuccess(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:            "10",
 		DirectoryIndicator: "1038",
 		RegistrantCode:     "213456",
 	}
-	if !doi.IsValid() {
+	if !identifier.IsValid() {
 		t.Fail()
 	}
 }
 
 func TestIsValidFailInvalidGeneral(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:            "11",
 		DirectoryIndicator: "1038",
 		RegistrantCode:     "213456",
 	}
-	if doi.IsValid() {
+	if identifier.IsValid() {
 		t.Fail()
 	}
 }
 
 func TestIsValidFailMissingGeneral(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		DirectoryIndicator: "1038",
 		RegistrantCode:     "213456",
 	}
-	if doi.IsValid() {
+	if identifier.IsValid() {
 		t.Fail()
 	}
 }
 
 func TestIsValidFailMissingDirectoryIndicator(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:        "10",
 		RegistrantCode: "213456",
 	}
-	if doi.IsValid() {
+	if identifier.IsValid() {
 		t.Fail()
 	}
 }
 
 func TestIsValidFailMissingRegistrantCode(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:            "10",
 		DirectoryIndicator: "1038",
 	}
-	if doi.IsValid() {
+	if identifier.IsValid() {
 		t.Fail()
 	}
 }
 
 func TestToStringValidDoi(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:            "10",
 		DirectoryIndicator: "1038",
 		RegistrantCode:     "213456",
 	}
-	if s, err := doi.ToString(); err != nil {
+	if s, err := identifier.ToString(); err != nil {
 		t.Fail()
 		if s != "10.1038/213456" {
 			t.Fail()
@@ -130,12 +123,12 @@ func TestToStringValidDoi(t *testing.T) {
 }
 
 func TestToStringInvalidDoi(t *testing.T) {
-	doi := Doi{
+	identifier := DigitalObjectIdentifier{
 		General:            "11",
 		DirectoryIndicator: "1038",
 		RegistrantCode:     "213456",
 	}
-	if _, err := doi.ToString(); err == nil {
+	if _, err := identifier.ToString(); err == nil {
 		t.Fail()
 	}
 }
