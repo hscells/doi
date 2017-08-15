@@ -1,5 +1,7 @@
 # doi
 
+![documentation](https://img.shields.io/badge/GoDoc-doi-blue.svg)
+
 _dealing with dois in go_
 
 ## Usage
