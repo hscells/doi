@@ -1,6 +1,6 @@
 # doi
 
-![documentation](https://img.shields.io/badge/GoDoc-doi-blue.svg)
+[![documentation](https://img.shields.io/badge/GoDoc-doi-blue.svg)](https://godoc.org/github.com/hscells/doi)
 
 _dealing with dois in go_
 
